@@ -1,0 +1,89 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <div class="ui stackable centered grid container">
+        <div class="twelve wide column">
+            <h2 class="ui header">
+                Reverse Cipher
+                <div class="sub header"></div>
+            </h2>
+        </div>
+        <div class="six wide column">
+            {% set flashes = {
+                'error':   get_flashed_messages(category_filter=['form-error']),
+                'warning': get_flashed_messages(category_filter=['form-check-email']),
+                'info':    get_flashed_messages(category_filter=['form-info']),
+                'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+
+
+            {{ f.begin_form(form, flashes) }}
+
+                {{ f.render_form_field(form.plaintext) }}
+
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+                {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
+                    {{ f.render_form_field(field) }}
+                {% endfor %}
+
+            {{ f.end_form() }}
+        </div>
+        <div class="six wide column">
+            <div class="ui card">
+                <div class="content">
+                  <div class="header">Result</div>
+                </div>
+                <div class="content">
+                    {% if encrypt: %}
+                        Ciphertext is <strong>{{encrypt}}</strong>
+                    {% endif %}
+                </div>
+              </div>
+        </div>
+
+        <div class="six wide column">
+            {% set flashes = {
+                'error':   get_flashed_messages(category_filter=['form-error']),
+                'warning': get_flashed_messages(category_filter=['form-check-email']),
+                'info':    get_flashed_messages(category_filter=['form-info']),
+                'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+
+
+            {{ f.begin_form(form2, flashes) }}
+
+                {{ f.render_form_field(form2.ciphertext)}}
+
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+                {% for field in form2 | selectattr('type', 'equalto', 'SubmitField') %}
+                    {{ f.render_form_field(field) }}
+                {% endfor %}
+
+            {{ f.end_form() }}
+        </div>
+        <div class="six wide column">
+            <div class="ui card">
+                <div class="content">
+                  <div class="header">Result</div>
+                </div>
+                <div class="content">
+                    {% if decrypt: %}
+                        Plaintext is <strong>{{decrypt}}</strong>
+                    {% endif %}
+                </div>
+              </div>
+        </div>
+    </div>
+{% endblock %}
