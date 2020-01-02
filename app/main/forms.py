@@ -19,3 +19,13 @@ class ReverseDecryptForm(FlaskForm):
     ciphertext = StringField(
         'CipherText')
     decrypt = SubmitField('Decrypt')
+
+class Rot13EncryptForm(FlaskForm):
+    plaintext = StringField(
+        'PlainText')
+    encrypt = SubmitField('Encrypt')
+
+class Rot13DecryptForm(FlaskForm):
+    ciphertext = StringField(
+        'CipherText')
+    decrypt = SubmitField('Decrypt')

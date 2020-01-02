@@ -10,7 +10,9 @@ from flask_login import (
 
 from app.main.forms import (
     ReverseEncryptForm,
-    ReverseDecryptForm
+    ReverseDecryptForm,
+    Rot13EncryptForm,
+    Rot13DecryptForm
 )
 
 from app import socketio
@@ -34,5 +36,19 @@ def reverse():
     if form2.validate_on_submit():
         text = form2.ciphertext.data
         decrypt = reversecipher(text)
-        
     return render_template('main/reverse.html', form=form, form2=form2, encrypt=encrypt,decrypt=decrypt)
+
+@main.route('/rot13', methods=['GET', 'POST'])
+@login_required
+def rot13():
+    encrypt =''
+    decrypt =''
+    form = Rot13EncryptForm()
+    form2 = Rot13DecryptForm()
+    if form.validate_on_submit():
+        text = form.plaintext.data
+        encrypt = rot13(text)
+    if form2.validate_on_submit():
+        text = form2.ciphertext.data
+        decrypt = rot13(text)
+    return render_template('main/rot13.html', form=form, form2=form2, encrypt=encrypt,decrypt=decrypt)
