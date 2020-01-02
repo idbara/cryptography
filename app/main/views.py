@@ -1,6 +1,13 @@
 from flask import Blueprint, render_template
 from app.module import caesarcipher, reversecipher, rot13, reverserot13encrypt, reverserot13decrypt
 
+from flask_login import (
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
+
 from app.main.forms import (
     ReverseEncryptForm,
     ReverseDecryptForm
@@ -15,6 +22,7 @@ def index():
     return render_template('main/index.html')
 
 @main.route('/reverse', methods=['GET', 'POST'])
+@login_required
 def reverse():
     encrypt =''
     decrypt =''
