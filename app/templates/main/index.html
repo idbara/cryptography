@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="ui text container">
-      <h1>Hello world</h1>
-      <p>{{ lipsum(6) }}</p>
+      <h1>Hello {% if not (current_user.is_authenticated) %} world {% else %} {{ current_user.full_name() }} <a href="{{ url_for('account.logout') }}">Logout</a> {% endif %},</h1>
+      <p>{{ lipsum(2) }}</p>
     </div>
 {% endblock %}

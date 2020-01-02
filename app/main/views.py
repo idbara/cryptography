@@ -6,8 +6,9 @@ from app.main.forms import (
     ReverseDecryptForm
 )
 
-main = Blueprint('main', __name__)
+from app import socketio
 
+main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():

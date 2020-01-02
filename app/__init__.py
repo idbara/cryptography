@@ -3,16 +3,27 @@ import os
 from flask import Flask
 from flask_assets import Environment
 from flask_compress import Compress
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
+from flask_socketio import SocketIO
+
 
 from app.assets import app_css, app_js, vendor_css, vendor_js
 from config import config as Config
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+db = SQLAlchemy()
 csrf = CSRFProtect()
 compress = Compress()
+socketio = SocketIO()
 
+
+# Set up Flask-Login
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'account.login'
 
 def create_app(config):
     app = Flask(__name__)
@@ -30,6 +41,10 @@ def create_app(config):
     # Set up extensions
     csrf.init_app(app)
     compress.init_app(app)
+    db.init_app(app)
+    login_manager.init_app(app)
+    socketio.init_app(app)
+    
 
     # Register Jinja template functions
     from .utils import register_template_utils
@@ -55,5 +70,9 @@ def create_app(config):
     # Create app blueprints
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .account import account as account_blueprint
+    app.register_blueprint(account_blueprint, url_prefix='/account')
+
 
     return app

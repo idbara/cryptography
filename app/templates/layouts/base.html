@@ -30,7 +30,7 @@
 
         {% block nav %}
           {# add dropdown variable here to the render_nav method to render dropdowns #}
-          {{ nav.render_nav(current_user) }}
+          {{ nav.render_nav() }}
         {% endblock %}
 
         {% include 'partials/_flashes.html' %}

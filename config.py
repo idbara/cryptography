@@ -20,10 +20,16 @@ class Config:
     else:
         SECRET_KEY = 'SECRET_KEY_ENV_VAR_NOT_SET'
         print('SECRET KEY ENV VAR NOT SET! SHOULD NOT SEE IN PRODUCTION')
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
     # Analytics
     GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')
     SEGMENT_API_KEY = os.environ.get('SEGMENT_API_KEY', '')
+
+    # Admin account
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'password')
+    ADMIN_EMAIL = os.environ.get(
+        'ADMIN_EMAIL', 'admin@admin.com')
 
     @staticmethod
     def init_app(app):
@@ -33,6 +39,8 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     ASSETS_DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL',
+        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
     
     @classmethod
     def init_app(cls, app):
@@ -53,6 +61,8 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     USE_RELOADER = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
+        'sqlite:///' + os.path.join(basedir, 'data.sqlite'))
     SSL_DISABLE = (os.environ.get('SSL_DISABLE', 'True') == 'True')
 
     @classmethod
