@@ -94,7 +94,8 @@ def login_confirm(token):
     user.status_login = "verified"
     db.session.add(user)
     db.session.commit()
-    return render_template('account/verified.html')
+    # return render_template('account/verified.html')
+    return "Verified!"
 
 
 @account.route('/register', methods=['GET', 'POST'])
